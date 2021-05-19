@@ -46,11 +46,20 @@ export class TasksService {
     return this.taskRepository.createTask(createTaskDto);
   }
 
-  // deleteTaskById(id: string): Task[] {
-  //   const found = this.getTaskById(id);
-  //   this.tasks = this.tasks.filter((task) => task.id !== found.id);
-  //   return this.tasks;
-  // }
+  async deleteTaskById(id: number): Promise<void> {
+    const result = await this.taskRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task ID is not present`);
+    }
+  }
+
+  async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    task.save();
+    return task;
+  }
 
   // updateTaskStatus(id: string, status: TaskStatus): Task {
   //   const task = this.getTaskById(id);

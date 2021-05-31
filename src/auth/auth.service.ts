@@ -26,7 +26,7 @@ export class AuthService {
     if (!username) {
       throw new UnauthorizedException('Invalid Credentials');
     }
-
+    // JwtPayload is the interface
     const payload: JwtPayload = { username };
     const accessToken = await this.jwtService.sign(payload);
     return { accessToken };
